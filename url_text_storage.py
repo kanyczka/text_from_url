@@ -19,7 +19,7 @@ class TextFromUrl():
             self.retrieved_from_links = []
             # self.links_text_list = []
             if self.response:
-                self.upload_time = datetime.now()
+                self.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M")
                 text_retrieved = sf.upload_text(self.response.text)
                 self.text = sf.make_one_line(text_retrieved)
                 print(f'Text retrieved from - {self.url}')
@@ -46,7 +46,6 @@ class TextFromUrl():
         print(f'Length of the text string: {len(self.text)}')
 
     def retrieve_from_links(self, number=None):
-
         """
         The argument of this method is the number of links you want to retrieve text from
         If none is given, the method goes through all the links
@@ -55,20 +54,25 @@ class TextFromUrl():
         if not isinstance(number, int) or number < 0:
             raise ValueError('The number must be integer or None')
         else:
+            IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif'}
             if not number:
                 number = len(self.links)
             for i in range(0, int(number)):
                 if sf.check_url(self.links[i])['true']:
                     response = sf.check_url(self.links[i])['response']
                     if response:
-                        text_retrieved = sf.upload_text(response.text)
-                        new_text = {
-                            'link': self.links[i],
-                            'upload_time': datetime.now().strftime("%Y-%m-%d %H:%M"),
-                            'text': sf.make_one_line(text_retrieved)
-                        }
-                        self.retrieved_from_links.append(new_text)
-                        print(f'Text retrieved from - {self.links[i]}')
+                        last_link_letters = str(self.links[i])[-4:]
+                        if last_link_letters in IMAGE_EXTS:
+                            print('The link is an image, not a text, the link was ignored')
+                        else:
+                            text_retrieved = sf.upload_text(response.text)
+                            new_text = {
+                                'link': self.links[i],
+                                'upload_time': datetime.now().strftime("%Y-%m-%d %H:%M"),
+                                'text': sf.make_one_line(text_retrieved)
+                            }
+                            self.retrieved_from_links.append(new_text)
+                            print(f'Text retrieved from - {self.links[i]}')
                     else:
                         print(f'{response.status_code}')
                 else:
