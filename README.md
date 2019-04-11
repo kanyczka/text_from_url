@@ -1,13 +1,14 @@
 # url_text_storage
 
-Python module for retrieving text from internet sites
+Python scraping module for extracting text from internet sites. 
+
+Python version: 3.7
 
 
 ### Prerequisites
 
-Python version: 3.7
 
-To have the module running you need to install BeautifulSoup, Requests and lxml parser
+To have the module running BeautifulSoup, Requests and lxml parser must be installed.
 
 ```
 $ apt-get install python3-bs4 (for Python 3)
