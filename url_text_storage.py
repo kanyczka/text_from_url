@@ -1,4 +1,5 @@
 from datetime import datetime
+import csv, os
 import scraping_func as sf
 
 
@@ -100,3 +101,18 @@ class TextFromUrl():
         for el in self.retrieved_from_links:
             text_list.append(el['text'])
         return text_list
+
+
+    def save_csv(self, file_name=None):
+        if not file_name:
+            name_num = sf.count_files() + 1
+            file_name = sf.name_file(name_num)
+        with open(file_name, 'w+') as f:
+            csv_writer = csv.writer(f)
+            csv_writer.writerow(['url', 'text', 'upload time'])
+            csv_writer.writerow([self.url, self.text, self.upload_time])
+            for el in self.retrieved_from_links:
+                csv_writer.writerow([el.get('link'), el.get('text'), el.get('upload_time')])
+
+
+

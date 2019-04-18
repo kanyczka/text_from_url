@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import re, os
+from datetime import datetime
 
 
 def check_url(url):
@@ -47,9 +48,22 @@ def make_one_line(content):
     return one_line_text
 
 
-def count_files(dir, file_type=".txt"):
+def count_files(file_type=".csv"):
+    curr_dir = os.getcwd()
     count = 0
-    for file in os.listdir(dir):
+    for file in os.listdir(curr_dir):
         if file.endswith(file_type):
             count += 1
     return count
+
+def name_file(name_num, file_type='.csv'):
+    curr_dir = os.getcwd()
+    file_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+    name_beginning = ''
+    if len(str(name_num)) == 1:
+        name_beginning = str(0)
+    file_name = name_beginning + str(name_num) + file_type
+    if file_name in os.listdir(curr_dir):
+        file_name = name_beginning + str(name_num) + '_' + file_time + file_type
+    return file_name
+
