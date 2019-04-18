@@ -18,7 +18,6 @@ class TextFromUrl():
             self.response = sf.check_url(self.url)['response']
             self.links = sf.upload_links(self.response.text, self.url)
             self.retrieved_from_links = []
-            # self.links_text_list = []
             if self.response:
                 self.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M")
                 text_retrieved = sf.upload_text(self.response.text)
@@ -107,6 +106,8 @@ class TextFromUrl():
         if not file_name:
             name_num = sf.count_files() + 1
             file_name = sf.name_file(name_num)
+        else:
+            file_name = file_name + '.csv'
         with open(file_name, 'w+') as f:
             csv_writer = csv.writer(f)
             csv_writer.writerow(['url', 'text', 'upload time'])

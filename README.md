@@ -47,6 +47,7 @@ show_text_lenght()
 retrieve_from_links(number)
 show_tex_from_links()
 all_text - returns a list of all texts retrieved from url and its links
+save_csv(flename) - saves all the texts in a csv file
 ```
 
 Method <b>retrieve_from_links</b> gets the text from all links found on the site.
@@ -58,7 +59,14 @@ If the link is an image ('.png', '.jpg', '.jpeg', '.gif'), the link will be igno
 ```
 url_text.retrieve_from_links(4)
 ```
+Method <b>save_csv(filename=None) </b>saves all retrieved texts in a csv file along with 
+the url and upload time. If no argument was given, the filename will be a number. 
+If the filename already exists the upload time will be added to the name.
 
+```
+url_text.save_csv()
+```
+ 
 #### -----------------
 
 The module is still under construction, so it may still have some bugs :)
