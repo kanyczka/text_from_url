@@ -50,9 +50,11 @@ class TextFromUrl():
         The argument of this method is the number of links you want to retrieve text from
         If none is given, the method goes through all the links
         """
-
-        if not isinstance(number, int) or number < 0:
-            raise ValueError('The number must be integer or None')
+        try:
+            if not isinstance(number, int) or number < 0:
+                raise ValueError('Not a proper number, the number must be an integer or None')
+        except ValueError as e:
+            print(e)
         else:
             IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif'}
             if not number:
@@ -78,11 +80,19 @@ class TextFromUrl():
                 else:
                     print('Bad url')
 
+
+
     def show_tex_from_links(self):
-        for link in self.retrieved_from_links:
-            text_length = len(link.get('text'))
-            print(f"{link.get('link')}\n Text: {link.get('text')}\n Text string length: {text_length}\n"
-                  f" Upload date/time: {link.get('upload_time')}")
+        try:
+            if not self.retrieved_from_links:
+                raise Exception
+        except Exception as a:
+            print('The link list is empty')
+        else:
+            for link in self.retrieved_from_links:
+                text_length = len(link.get('text'))
+                print(f"{link.get('link')}\n Text: {link.get('text')}\n Text string length: {text_length}\n"
+                      f" Upload date/time: {link.get('upload_time')}")
 
     @property
     def all_text(self):

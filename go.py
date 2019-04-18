@@ -1,7 +1,7 @@
 from url_text_storage import TextFromUrl
 
 
-url = 'https://totomato.pl/'
+url = 'https://coreyms.com'
 print('\n============= Class TextFromUrl(url) =========================================\n')
 url_text = TextFromUrl(url)
 print('\n============= Class attributes: text, url, uppload_time ======================\n')
@@ -15,7 +15,7 @@ url_text.show_text_lenght()
 print('\n============= Method: show_links() ===========================================\n')
 url_text.show_links()
 print('\n============= Method: retrieve_from_links() ==================================\n')
-url_text.retrieve_from_links(4)
+url_text.retrieve_from_links(-1)
 print('\n============= Method: show_text_from_links() =================================\n')
 url_text.show_tex_from_links()
 print(
