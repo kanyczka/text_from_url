@@ -51,7 +51,9 @@ class TextFromUrl():
         If none is given, the method goes through all the links
         """
         try:
-            if not isinstance(number, int) or number < 0:
+            if number == None:
+                pass
+            elif not isinstance(number, int) or number < 0:
                 raise ValueError('Not a proper number, the number must be an integer or None')
         except ValueError as e:
             print(e)
