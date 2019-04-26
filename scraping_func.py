@@ -6,10 +6,9 @@ from datetime import datetime
 
 def check_url(url):
     try:
-        requests.get(url)
-        return {'true': True, 'response': requests.get(url)}
+        return requests.get(url, timeout=1)
     except:
-        return False
+        return None
 
 
 def upload_text(html_data):
@@ -19,7 +18,6 @@ def upload_text(html_data):
     text = ' '.join(soup.stripped_strings)
     clean_text = re.sub("{{.*?}}", '', text)
     return clean_text
-
 
 
 def upload_links(html_data, url):

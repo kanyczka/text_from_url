@@ -5,20 +5,17 @@ import scraping_func as sf
 
 class TextFromUrl():
     """
-      This class allows you to grab text from websites.
-      You pass a url as an argument of the class.
-      After checking if the url is correct, the text will be retrieved form the site and saved as a dictionary object
-      with upload_time.
-
+      This class allows you to retrieve text from websites.
+      A url is an argument of the class. After checking if the url is correct, the text will be retrieved
+      form the site and saved as a dictionary object with upload_time.
     """
-
     def __init__(self, url):
         self.url = url
-        if sf.check_url(self.url)['true']:
-            self.response = sf.check_url(self.url)['response']
-            self.links = sf.upload_links(self.response.text, self.url)
+        self.response = sf.check_url(self.url)
+        if self.response:
             self.retrieved_from_links = []
-            if self.response:
+            if self.response.ok:
+                self.links = sf.upload_links(self.response.text, self.url)
                 self.upload_time = datetime.now().strftime("%Y-%m-%d %H:%M")
                 text_retrieved = sf.upload_text(self.response.text)
                 self.text = sf.make_one_line(text_retrieved)
@@ -26,8 +23,7 @@ class TextFromUrl():
             else:
                 print(f'Error code: {self.response.status_code}')
         else:
-            print('Bad url')
-            del self.url
+            raise Exception(f"Bad url! {self.url}")
 
     def __str__(self):
         return "url: " + self.url
@@ -61,27 +57,25 @@ class TextFromUrl():
             IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif'}
             if not number:
                 number = len(self.links)
-            for i in range(0, int(number)):
-                if sf.check_url(self.links[i])['true']:
-                    response = sf.check_url(self.links[i])['response']
-                    if response:
-                        last_link_letters = str(self.links[i])[-4:]
-                        if last_link_letters in IMAGE_EXTS:
-                            print('The link is an image, not a text, the link was ignored')
-                        else:
-                            text_retrieved = sf.upload_text(response.text)
-                            new_text = {
-                                'link': self.links[i],
-                                'upload_time': datetime.now().strftime("%Y-%m-%d %H:%M"),
-                                'text': sf.make_one_line(text_retrieved)
-                            }
-                            self.retrieved_from_links.append(new_text)
-                            print(f'Text retrieved from - {self.links[i]}')
+            for i in range(int(number)):
+                response = sf.check_url(self.links[i])
+                if not response:
+                    print(f"Bad url - {self.links[i]}")
+                elif response.ok:
+                    link, file_extension = os.path.splitext(self.links[i])
+                    if file_extension in IMAGE_EXTS:
+                        print(f'The link {self.links[i]} is not readable.')
                     else:
-                        print(f'{response.status_code}')
+                        text_retrieved = sf.upload_text(response.text)
+                        new_text = {
+                            'link': self.links[i],
+                            'upload_time': datetime.now().strftime("%Y-%m-%d %H:%M"),
+                            'text': sf.make_one_line(text_retrieved)
+                        }
+                        self.retrieved_from_links.append(new_text)
+                        print(f'Text retrieved from - {self.links[i]}')
                 else:
-                    print('Bad url')
-
+                    print(f'{response.status_code}')
 
 
     def show_tex_from_links(self):
