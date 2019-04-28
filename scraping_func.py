@@ -6,7 +6,7 @@ from datetime import datetime
 
 def check_url(url):
     try:
-        return requests.get(url, timeout=1)
+        return requests.get(url, timeout=5)
     except:
         return None
 

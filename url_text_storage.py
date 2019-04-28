@@ -55,9 +55,9 @@ class TextFromUrl():
             print(e)
         else:
             IMAGE_EXTS = {'.png', '.jpg', '.jpeg', '.gif'}
-            if not number:
+            if not number or number > len(self.links):
                 number = len(self.links)
-            for i in range(int(number)):
+            for i in range(number):
                 response = sf.check_url(self.links[i])
                 if not response:
                     print(f"Bad url - {self.links[i]}")
